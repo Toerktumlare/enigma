@@ -57,21 +57,21 @@ mod test {
 
     #[test]
     pub fn enigma_one_rotor_with_rotation() {
-        let rotors = vec![Rotor::with_set("ABC")];
+        let rotors = vec![Rotor::with_key("ABC")];
         let mut enigma = Enigma::with_rotors(rotors);
         assert_eq!("B", enigma.encrypt("a"));
     }
 
     #[test]
     pub fn enigma_two_rotors_no_notch() {
-        let rotors = vec![Rotor::with_set("ABC"), Rotor::with_set("ABC")];
+        let rotors = vec![Rotor::with_key("ABC"), Rotor::with_key("ABC")];
         let mut enigma = Enigma::with_rotors(rotors);
         assert_eq!(enigma.encrypt("a"), "B");
     }
 
     #[test]
     pub fn if_at_notch_should_rotate_second_rotor() {
-        let rotors = vec![Rotor::new("ABC", 'A'), Rotor::with_set("ABC")];
+        let rotors = vec![Rotor::new("ABC", 'A'), Rotor::with_key("ABC")];
         let mut enigma = Enigma::with_rotors(rotors);
         enigma.update_rotors();
         println!("{:?}", enigma.rotors);
@@ -79,7 +79,7 @@ mod test {
 
     #[test]
     pub fn should_rotate_first_rotor_not_second() {
-        let rotors = vec![Rotor::new("ABC", 'B'), Rotor::with_set("ABC")];
+        let rotors = vec![Rotor::new("ABC", 'B'), Rotor::with_key("ABC")];
         let mut enigma = Enigma::with_rotors(rotors);
 
         enigma.update_rotors();

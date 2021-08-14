@@ -24,7 +24,7 @@ impl Rotor {
         Self { state, notch }
     }
 
-    pub fn with_set(set: &str) -> Self {
+    pub fn with_key(set: &str) -> Self {
         Rotor::new(set, ' ')
     }
 
@@ -67,19 +67,19 @@ mod test {
 
     #[test]
     pub fn enc_lowercase() {
-        let rotor = Rotor::with_set("CBA");
+        let rotor = Rotor::with_key("CBA");
         assert_eq!('C', rotor.encode(&'a'));
     }
 
     #[test]
     pub fn enc_uppercase() {
-        let rotor = Rotor::with_set("CBA");
+        let rotor = Rotor::with_key("CBA");
         assert_eq!('C', rotor.encode(&'A'));
     }
 
     #[test]
     pub fn rotate() {
-        let mut rotor = Rotor::with_set("ABC");
+        let mut rotor = Rotor::with_key("ABC");
         rotor.rotate();
         assert_eq!(rotor.encode(&'a'), 'B');
     }
@@ -92,7 +92,7 @@ mod test {
 
     #[test]
     pub fn not_at_notch_when_doesnt_have_one() {
-        let rotor = Rotor::with_set("ABC");
+        let rotor = Rotor::with_key("ABC");
         assert!(!rotor.at_notch());
     }
 
