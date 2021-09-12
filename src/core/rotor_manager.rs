@@ -3,14 +3,16 @@ use super::rotor::Rotor;
 #[allow(non_camel_case_types, dead_code)]
 pub enum ReflectorType {
     UKW_A,
-    TEST,
+    Test,
+    None,
 }
 
 impl ReflectorType {
-    fn value(&self) -> Rotor {
-        match *self {
-            ReflectorType::UKW_A => Rotor::with_key("EJMZALYXVBWFCRQUONTSPIKHGD"),
-            ReflectorType::TEST => Rotor::with_key("ABC"),
+    fn value(&self) -> Option<Rotor> {
+        match &self {
+            ReflectorType::UKW_A => Some(Rotor::with_key("EJMZALYXVBWFCRQUONTSPIKHGD")),
+            ReflectorType::Test => Some(Rotor::with_key("ABC")),
+            ReflectorType::None => None,
         }
     }
 }
@@ -18,23 +20,23 @@ impl ReflectorType {
 #[allow(dead_code)]
 pub enum RotorType {
     I,
-    TEST,
-    TEST_NOTCHLESS,
+    Test,
+    TestNotchless,
 }
 
 impl RotorType {
     fn value(&self) -> Rotor {
-        match *self {
+        match self {
             RotorType::I => Rotor::new("EKMFLGDQVZNTOWYHXUSPAIBRCJ", 'Y'),
-            RotorType::TEST => Rotor::new("ABC", 'B'),
-            RotorType::TEST_NOTCHLESS => Rotor::with_key("ABC"),
+            RotorType::Test => Rotor::new("ABC", 'B'),
+            RotorType::TestNotchless => Rotor::with_key("ABC"),
         }
     }
 }
 
 pub struct RotorManager {
     pub(super) rotors: Vec<Rotor>,
-    reflector: Rotor,
+    pub(super) reflector: Option<Rotor>,
 }
 
 impl RotorManager {
@@ -72,15 +74,15 @@ mod test {
 
     #[test]
     pub fn should_add_rotor() {
-        let rotor_manager = RotorManager::new(ReflectorType::TEST).add_rotor(RotorType::TEST);
+        let rotor_manager = RotorManager::new(ReflectorType::Test).add_rotor(RotorType::Test);
         assert_eq!(rotor_manager.rotors.len(), 1)
     }
 
     #[test]
     pub fn should_rotate_first_but_not_second() {
-        let mut rotor_manager = RotorManager::new(ReflectorType::TEST)
-            .add_rotor(RotorType::TEST)
-            .add_rotor(RotorType::TEST);
+        let mut rotor_manager = RotorManager::new(ReflectorType::Test)
+            .add_rotor(RotorType::Test)
+            .add_rotor(RotorType::Test);
 
         rotor_manager.update_rotors();
 
@@ -94,9 +96,9 @@ mod test {
 
     #[test]
     pub fn should_rotate_first_and_second() {
-        let mut rotor_manager = RotorManager::new(ReflectorType::TEST)
-            .add_rotor(RotorType::TEST)
-            .add_rotor(RotorType::TEST);
+        let mut rotor_manager = RotorManager::new(ReflectorType::Test)
+            .add_rotor(RotorType::Test)
+            .add_rotor(RotorType::Test);
 
         rotor_manager.update_rotors();
         rotor_manager.update_rotors();
